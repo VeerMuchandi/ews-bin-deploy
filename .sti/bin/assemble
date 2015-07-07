@@ -46,11 +46,6 @@ if [ -f "$LOCAL_SOURCE_DIR/pom.xml" ]; then
   # to the $DEPLOY_DIR directory for later deployment
   copy_artifacts "$ARTIFACT_DIR"
 
-  echo " Veer - Custom code for binary deployment"
-  # Picks up WAR_FILE_URL from buildConfig
-  echo ${WAR_FILE_URL}
-  curl -o ${DEPLOY_DIR}/ROOT.war -O ${WAR_FILE_URL}
-
   # clean up after maven
   mvn clean
   if [ -d "$HOME/.m2/repository" ]; then
@@ -60,9 +55,15 @@ if [ -f "$LOCAL_SOURCE_DIR/pom.xml" ]; then
   popd &> /dev/null
 fi
 
+
 # Copy (probably binary) artifacts from the deployments/
 # directory to the $DEPLOY_DIR directory for later deployment
 copy_artifacts "deployments"
+
+  echo " Veer - Custom code for binary deployment"
+  # Picks up WAR_FILE_URL from buildConfig
+  echo ${WAR_FILE_URL}
+  curl -o ${DEPLOY_DIR}/ROOT.war -O ${WAR_FILE_URL}
 
 if [ -d $LOCAL_SOURCE_DIR/configuration ]; then
   echo "Copying config files from project..."
